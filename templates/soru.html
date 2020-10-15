@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12 mt-3">
+              <h3 class="text-center">SORU</h3>
+          <p><strong>SORU SAHİBİ :</strong> {{sorular.soran}} </p>
+          <p><strong>SORU KONUSU :</strong> {{sorular.sorukonu|upper}} </p>
+          <p><strong>SORU : </strong> {{sorular.soru}} </p>
+          {% if sorular.image %}
+            <p><strong>SORU GÖRSELİ :</strong><br /> <img src="{{sorular.image.url}}" width="400"/> </p>
+          {% endif %}
+
+          </div>
+      </div>
+  </div>
+
+
+
+
+  <div class="container mt-3 mb-3 p-2">
+    <h3 class="text-center">CEVAP</h3>
+    <div class="row">
+        <div class="col-lg-12 mt-3">
+            {% for i in cevaplar %}
+        <p><strong>CEVAP SAHİBİ :</strong> {{i.soru.soran}} </p>
+        <p><strong>CEVAP TARİHİ:</strong> {{i.cevaptarihi}} </p>
+        <p><strong>CEVAP :</strong> {{i.cevap}} </p>
+        {% if i.image %}
+          <p><strong>CEVAP GÖRSELİ :</strong><br /> <img src="{{i.image.url}}" width="400"/> </p>
+        {% endif %}
+          {% endfor %}
+        </div>
+    </div>
+      <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          {{form.as_p}}
+        </div>
+        <button type="submit" class="btn btn-danger btn-lg text-center">SORUYU CEVAPLA</button>
+      </form>
+  </div>
+
+
+
+
+
+
+
+
+{% endblock %}

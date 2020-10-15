@@ -2,10 +2,15 @@ from django.shortcuts import render
 from .models import Soru,Cevaplar
 from .forms import SoruForm,CevapForm
 from django.shortcuts import redirect
+from datetime import date
+import datetime
 # Create your views here.
 
+
 def mainpage(request):
-    sorular=Soru.objects.all()
+    start = date.today() - datetime.timedelta(days=2)
+    end = date.today()
+    sorular=Soru.objects.filter(sorutarihi__range=[start, end])
     content={"sorular":sorular}
     return render(request,"mainpage.html",content)
 
@@ -23,7 +28,8 @@ def soru(request,pk):
                 image=""
             cevap=Cevaplar(soru=sorular,cevaplayan=cevaplayan,image=image,cevap=cevap)
             cevap.save()
-            sorular.status="Cevaplandı"
+            sorular.sorustatus="Cevaplandı"
+            sorular.save()
             return redirect('soru', pk=pk)
     else:
         form = CevapForm()
